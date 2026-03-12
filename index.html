@@ -68,22 +68,51 @@ let video = document.getElementById("video");
 let baslat = document.getElementById("baslat");
 let ilerleBtn = document.getElementById("ilerle");
 
+let sahne = 1;
+
 baslat.onclick = function(){
 
 baslat.style.display="none";
 video.style.display="block";
 
+video.src="1.mp4";
 video.play();
 
 }
 
-// video bitince ilerle butonu çıkar
+// video bitince
 video.onended = function(){
+
+if(sahne == 1){
+ilerleBtn.innerText="İlerle";
 ilerleBtn.style.display="block";
 }
 
+if(sahne == 2){
+ilerleBtn.innerText="Şifreyi Çöz";
+ilerleBtn.style.display="block";
+}
+
+}
+
 function ilerle(){
-window.location.href="sahne2.html";
+
+if(sahne == 1){
+
+video.src="2.mp4";
+video.play();
+
+ilerleBtn.style.display="none";
+sahne = 2;
+
+}
+
+else if(sahne == 2){
+
+alert("Şifre ekranı buraya gelecek");
+
+}
+
 }
 
 // sağ tık kapatma
