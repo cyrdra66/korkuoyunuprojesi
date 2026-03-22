@@ -49,8 +49,7 @@ background:#cc0029;
 display:none;
 }
 
-/* KARARMA EFEKTI */
-
+/* KARARMA */
 #fade{
 position:fixed;
 top:0;
@@ -61,6 +60,32 @@ background:black;
 opacity:0;
 pointer-events:none;
 transition:opacity 1s;
+}
+
+/* ŞİFRE EKRANI */
+#sifreEkrani{
+display:none;
+flex-direction:column;
+align-items:center;
+gap:15px;
+}
+
+input{
+padding:15px;
+font-size:22px;
+border-radius:10px;
+border:none;
+text-align:center;
+width:200px;
+background:black;
+color:#00ffcc;
+box-shadow:0 0 15px #00ffcc;
+}
+
+#sonuc{
+font-size:18px;
+color:#00ffcc;
+text-shadow:0 0 10px #00ffcc;
 }
 
 </style>
@@ -78,6 +103,14 @@ transition:opacity 1s;
 
 <button id="ilerle" onclick="ilerle()">İlerle</button>
 
+<!-- ŞİFRE OYUNU -->
+<div id="sifreEkrani">
+<h2>Şifreyi Kır 🔐</h2>
+<input type="number" id="tahmin" placeholder="3 haneli gir">
+<button onclick="kontrol()">Dene</button>
+<div id="sonuc"></div>
+</div>
+
 <script>
 
 let video = document.getElementById("video");
@@ -85,19 +118,21 @@ let baslat = document.getElementById("baslat");
 let ilerleBtn = document.getElementById("ilerle");
 let fade = document.getElementById("fade");
 
+let sifreEkrani = document.getElementById("sifreEkrani");
+let sonuc = document.getElementById("sonuc");
+
 let sahne = 1;
 
-baslat.onclick = function(){
+// random 3 haneli şifre
+let sifre = Math.floor(100 + Math.random() * 900);
 
+baslat.onclick = function(){
 baslat.style.display="none";
 video.style.display="block";
-
 video.src="1.mp4";
 video.play();
-
 }
 
-// video bitince
 video.onended = function(){
 
 if(sahne == 1){
@@ -106,7 +141,7 @@ ilerleBtn.style.display="block";
 }
 
 if(sahne == 2){
-ilerleBtn.innerText="Şifreyi Çöz";
+ilerleBtn.innerText="Şifreyi Kır";
 ilerleBtn.style.display="block";
 }
 
@@ -114,33 +149,49 @@ ilerleBtn.style.display="block";
 
 function ilerle(){
 
-// ekran kararsın
 fade.style.opacity = "1";
 
 setTimeout(function(){
 
 if(sahne == 1){
-
 video.src="2.mp4";
 video.play();
 sahne = 2;
-
 }
 
 else if(sahne == 2){
 
-alert("Şifre ekranı buraya gelecek");
+video.style.display="none";
+ilerleBtn.style.display="none";
+sifreEkrani.style.display="flex";
 
 }
 
-ilerleBtn.style.display="none";
-
-// ekran tekrar açılsın
 setTimeout(function(){
 fade.style.opacity="0";
 },100);
 
 },1000);
+
+}
+
+// ŞİFRE KONTROL
+function kontrol(){
+
+let tahmin = Number(document.getElementById("tahmin").value);
+
+if(!tahmin) return;
+
+if(tahmin > sifre){
+sonuc.innerText = "Daha küçük gir 🔽";
+}
+else if(tahmin < sifre){
+sonuc.innerText = "Daha büyük gir 🔼";
+}
+else{
+sonuc.innerText = "Şifre Kırıldı! 🎉";
+sonuc.style.color = "#00ff00";
+}
 
 }
 
