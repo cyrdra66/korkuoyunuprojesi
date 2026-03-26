@@ -6,7 +6,6 @@
 <title>Hikaye Oyunu</title>
 
 <style>
-
 body{
 margin:0;
 background:black;
@@ -25,7 +24,6 @@ width:95%;
 max-width:900px;
 border-radius:10px;
 display:none;
-pointer-events:none;
 }
 
 button{
@@ -48,27 +46,18 @@ opacity:0;
 transition:1s;
 }
 
-/* ŞİFRE */
+#ilerle{display:none}
+#devam{display:none}
+
 #sifreEkrani{display:none;flex-direction:column;gap:10px}
 #sonuc{color:#00ffcc}
 
-/* DEVAM */
-#devam{display:none}
-
-/* YAZI EKRANI */
 #yaziEkrani{
 display:none;
 font-size:30px;
 text-align:center;
-animation:fadeIn 2s forwards;
 }
 
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(30px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-/* HAFIZA OYUNU */
 #oyun{
 display:none;
 grid-template-columns:repeat(5,80px);
@@ -82,7 +71,6 @@ background:#222;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:20px;
 cursor:pointer;
 border-radius:10px;
 }
@@ -95,7 +83,6 @@ border-radius:10px;
 }
 
 .acik img{display:block}
-
 </style>
 </head>
 
@@ -105,46 +92,57 @@ border-radius:10px;
 
 <button id="baslat">Başlat</button>
 <video id="video"></video>
-<button id="ilerle" onclick="ilerle()" style="display:none">İlerle</button>
+<button id="ilerle">İlerle</button>
 
-<!-- ŞİFRE -->
 <div id="sifreEkrani">
 <input id="tahmin" placeholder="3 haneli">
 <button onclick="kontrol()">Dene</button>
 <div id="sonuc"></div>
-<button id="devam" onclick="devamEt()">Devam Et</button>
+<button id="devam">Devam Et</button>
 </div>
 
-<!-- YAZI -->
 <div id="yaziEkrani">
 <p id="yazi"></p>
-<button id="yaziDevam" onclick="oyunaGec()" style="display:none">Devam Et</button>
+<button id="yaziDevam">Devam Et</button>
 </div>
 
-<!-- OYUN -->
 <div id="oyun"></div>
 
 <script>
 
+// ELEMENTLER
+let baslat = document.getElementById("baslat");
 let video = document.getElementById("video");
-let fade = document.getElementById("fade");
 let ilerleBtn = document.getElementById("ilerle");
+let fade = document.getElementById("fade");
 
+let sifreEkrani = document.getElementById("sifreEkrani");
+let sonuc = document.getElementById("sonuc");
+let devamBtn = document.getElementById("devam");
+
+let yaziEkrani = document.getElementById("yaziEkrani");
+let yazi = document.getElementById("yazi");
+let yaziDevam = document.getElementById("yaziDevam");
+
+let oyun = document.getElementById("oyun");
+
+// DURUM
 let sahne = 1;
 let sifre = Math.floor(100 + Math.random()*900);
 
 // BAŞLAT
-baslat.onclick=()=>{
+baslat.onclick = ()=>{
 baslat.style.display="none";
 video.style.display="block";
 video.src="1.mp4";
 video.play();
 }
 
-// VIDEO BİTTİ
-video.onended=()=>{
+// VİDEO SONU
+video.onended = ()=>{
 
 if(sahne==1){
+ilerleBtn.innerText="İlerle";
 ilerleBtn.style.display="block";
 }
 
@@ -161,7 +159,7 @@ ilerleBtn.style.display="block";
 }
 
 // İLERLE
-function ilerle(){
+ilerleBtn.onclick = ()=>{
 
 fade.style.opacity=1;
 
@@ -193,18 +191,21 @@ fade.style.opacity=0;
 // ŞİFRE
 function kontrol(){
 
-let t = Number(tahmin.value);
+let t = Number(document.getElementById("tahmin").value);
+
+if(!t) return;
 
 if(t>sifre) sonuc.innerText="Daha küçük";
 else if(t<sifre) sonuc.innerText="Daha büyük";
 else{
 sonuc.innerText="Doğru!";
-devam.style.display="block";
+devamBtn.style.display="block";
 }
+
 }
 
 // 3. VİDEO
-function devamEt(){
+devamBtn.onclick = ()=>{
 
 fade.style.opacity=1;
 
@@ -222,10 +223,12 @@ fade.style.opacity=0;
 
 }
 
-// YAZI ANİMASYONU
+// YAZI
 function yaziAnimasyonu(){
 
 yaziEkrani.style.display="block";
+yazi.innerText="";
+
 let text="Yol bozuldu yolu onar...";
 let i=0;
 
@@ -244,10 +247,11 @@ yaziDevam.style.display="block";
 }
 
 // OYUNA GEÇ
-function oyunaGec(){
+yaziDevam.onclick = ()=>{
 
 yaziEkrani.style.display="none";
 oyun.style.display="grid";
+oyun.innerHTML="";
 hafizaOyunu();
 
 }
@@ -261,7 +265,6 @@ kartlar.push(i);
 kartlar.push(i);
 }
 
-// karıştır
 kartlar.sort(()=>Math.random()-0.5);
 
 let secilen=[];
