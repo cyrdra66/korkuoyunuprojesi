@@ -105,24 +105,24 @@ border-radius:10px;
 
 <script>
 
-document.addEventListener("DOMContentLoaded",()=>{
+// ELEMENTLER
+const baslat = document.getElementById("baslat");
+const video = document.getElementById("video");
+const ilerle = document.getElementById("ilerle");
+const fade = document.getElementById("fade");
 
-let baslat = document.getElementById("baslat");
-let video = document.getElementById("video");
-let ilerleBtn = document.getElementById("ilerle");
-let fade = document.getElementById("fade");
+const sifreEkrani = document.getElementById("sifreEkrani");
+const sonuc = document.getElementById("sonuc");
+const devam = document.getElementById("devam");
+const dene = document.getElementById("dene");
 
-let sifreEkrani = document.getElementById("sifreEkrani");
-let sonuc = document.getElementById("sonuc");
-let devamBtn = document.getElementById("devam");
-let deneBtn = document.getElementById("dene");
+const yaziEkrani = document.getElementById("yaziEkrani");
+const yazi = document.getElementById("yazi");
+const yaziDevam = document.getElementById("yaziDevam");
 
-let yaziEkrani = document.getElementById("yaziEkrani");
-let yazi = document.getElementById("yazi");
-let yaziDevam = document.getElementById("yaziDevam");
+const oyun = document.getElementById("oyun");
 
-let oyun = document.getElementById("oyun");
-
+// DURUM
 let sahne = 1;
 let sifre = Math.floor(100 + Math.random()*900);
 
@@ -134,24 +134,24 @@ video.src="1.mp4";
 video.play();
 }
 
-// VİDEO BİTTİ
+// VİDEO BİTİNCE
 video.onended = ()=>{
 if(sahne==1){
-ilerleBtn.innerText="İlerle";
-ilerleBtn.style.display="block";
+ilerle.innerText="İlerle";
+ilerle.style.display="block";
 }
 else if(sahne==2){
-ilerleBtn.innerText="Şifreyi Kır";
-ilerleBtn.style.display="block";
+ilerle.innerText="Şifreyi Kır";
+ilerle.style.display="block";
 }
 else if(sahne==3){
-ilerleBtn.innerText="Devam Et";
-ilerleBtn.style.display="block";
+ilerle.innerText="Devam Et";
+ilerle.style.display="block";
 }
 }
 
 // İLERLE
-ilerleBtn.onclick = ()=>{
+ilerle.onclick = ()=>{
 
 fade.style.opacity=1;
 
@@ -162,40 +162,41 @@ video.src="2.mp4";
 video.play();
 sahne=2;
 }
+
 else if(sahne==2){
 video.style.display="none";
-ilerleBtn.style.display="none";
+ilerle.style.display="none";
 sifreEkrani.style.display="flex";
 }
+
 else if(sahne==3){
 video.style.display="none";
-ilerleBtn.style.display="none";
+ilerle.style.display="none";
 yaziAnimasyonu();
 }
 
 fade.style.opacity=0;
 
-},1000);
+},800);
 }
 
 // ŞİFRE
-deneBtn.onclick = ()=>{
+dene.onclick = ()=>{
 
 let t = Number(document.getElementById("tahmin").value);
 
 if(!t) return;
 
-if(t>sifre) sonuc.innerText="Daha küçük";
-else if(t<sifre) sonuc.innerText="Daha büyük";
+if(t > sifre) sonuc.innerText="Daha küçük";
+else if(t < sifre) sonuc.innerText="Daha büyük";
 else{
-sonuc.innerText="Doğru!";
-devamBtn.style.display="block";
+sonuc.innerText="Şifre Kırıldı!";
+devam.style.display="block";
 }
-
 }
 
 // 3. VİDEO
-devamBtn.onclick = ()=>{
+devam.onclick = ()=>{
 
 fade.style.opacity=1;
 
@@ -206,11 +207,11 @@ video.src="3.mp4";
 video.play();
 sahne=3;
 fade.style.opacity=0;
-},1000);
+},800);
 
 }
 
-// YAZI
+// YAZI ANİMASYONU
 function yaziAnimasyonu(){
 
 yaziEkrani.style.display="block";
@@ -221,34 +222,29 @@ let text="Yol bozuldu yolu onar...";
 let i=0;
 
 let interval=setInterval(()=>{
-
-yazi.innerText+=text[i];
+yazi.innerText += text[i];
 i++;
 
 if(i>=text.length){
 clearInterval(interval);
 yaziDevam.style.display="block";
 }
-
 },50);
 
 }
 
 // OYUNA GEÇ
 yaziDevam.onclick = ()=>{
-
 yaziEkrani.style.display="none";
 oyun.style.display="grid";
 oyun.innerHTML="";
 hafiza();
-
 }
 
-// HAFIZA
+// HAFIZA OYUNU
 function hafiza(){
 
 let kartlar=[];
-
 for(let i=1;i<=10;i++){
 kartlar.push(i);
 kartlar.push(i);
@@ -264,11 +260,11 @@ let div=document.createElement("div");
 div.className="kart";
 
 let img=document.createElement("img");
-img.src=num+".png";
+img.src = num + ".png";
 
 div.appendChild(img);
 
-div.onclick=()=>{
+div.onclick = ()=>{
 
 if(div.classList.contains("acik")) return;
 
@@ -277,13 +273,13 @@ secilen.push(div);
 
 if(secilen.length==2){
 
-if(secilen[0].innerHTML!=secilen[1].innerHTML){
+if(secilen[0].innerHTML !== secilen[1].innerHTML){
 
 setTimeout(()=>{
 secilen[0].classList.remove("acik");
 secilen[1].classList.remove("acik");
 secilen=[];
-},700);
+},600);
 
 }else{
 secilen=[];
@@ -291,15 +287,13 @@ secilen=[];
 
 }
 
-}
+};
 
 oyun.appendChild(div);
 
 });
 
 }
-
-});
 
 </script>
 
