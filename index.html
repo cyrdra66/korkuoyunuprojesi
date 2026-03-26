@@ -9,33 +9,35 @@
 body{
 margin:0;
 background:black;
-font-family:Arial;
+color:white;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
 height:100vh;
-flex-direction:column;
-color:white;
+font-family:Arial;
 overflow:hidden;
 }
 
 video{
 width:95%;
 max-width:900px;
-border-radius:10px;
 display:none;
 }
 
 button{
-padding:15px 40px;
-font-size:20px;
+padding:15px 30px;
+margin-top:10px;
+background:red;
+color:white;
 border:none;
 border-radius:10px;
-background:#ff0033;
-color:white;
+font-size:18px;
 cursor:pointer;
-margin-top:15px;
 }
+
+#ilerle{display:none}
+#devam{display:none}
 
 #fade{
 position:fixed;
@@ -46,18 +48,15 @@ opacity:0;
 transition:1s;
 }
 
-#ilerle{display:none}
-#devam{display:none}
+/* şifre */
+#sifreEkrani{display:none;flex-direction:column}
+#sonuc{margin-top:10px}
 
-#sifreEkrani{display:none;flex-direction:column;gap:10px}
-#sonuc{color:#00ffcc}
+/* yazı */
+#yaziEkrani{display:none;text-align:center}
+#yaziDevam{display:none}
 
-#yaziEkrani{
-display:none;
-font-size:30px;
-text-align:center;
-}
-
+/* oyun */
 #oyun{
 display:none;
 grid-template-columns:repeat(5,80px);
@@ -67,19 +66,18 @@ gap:10px;
 .kart{
 width:80px;
 height:80px;
-background:#222;
+background:#333;
+border-radius:10px;
 display:flex;
 justify-content:center;
 align-items:center;
 cursor:pointer;
-border-radius:10px;
 }
 
 .kart img{
 width:100%;
 height:100%;
 display:none;
-border-radius:10px;
 }
 
 .acik img{display:block}
@@ -110,15 +108,14 @@ border-radius:10px;
 
 <script>
 
-// ELEMENTLER
 let baslat = document.getElementById("baslat");
 let video = document.getElementById("video");
-let ilerleBtn = document.getElementById("ilerle");
+let ilerle = document.getElementById("ilerle");
 let fade = document.getElementById("fade");
 
 let sifreEkrani = document.getElementById("sifreEkrani");
 let sonuc = document.getElementById("sonuc");
-let devamBtn = document.getElementById("devam");
+let devam = document.getElementById("devam");
 
 let yaziEkrani = document.getElementById("yaziEkrani");
 let yazi = document.getElementById("yazi");
@@ -126,11 +123,10 @@ let yaziDevam = document.getElementById("yaziDevam");
 
 let oyun = document.getElementById("oyun");
 
-// DURUM
 let sahne = 1;
 let sifre = Math.floor(100 + Math.random()*900);
 
-// BAŞLAT
+// başlat
 baslat.onclick = ()=>{
 baslat.style.display="none";
 video.style.display="block";
@@ -138,28 +134,28 @@ video.src="1.mp4";
 video.play();
 }
 
-// VİDEO SONU
+// video bitince
 video.onended = ()=>{
 
 if(sahne==1){
-ilerleBtn.innerText="İlerle";
-ilerleBtn.style.display="block";
+ilerle.style.display="block";
+ilerle.innerText="İlerle";
 }
 
 else if(sahne==2){
-ilerleBtn.innerText="Şifreyi Kır";
-ilerleBtn.style.display="block";
+ilerle.style.display="block";
+ilerle.innerText="Şifreyi Kır";
 }
 
 else if(sahne==3){
-ilerleBtn.innerText="Devam Et";
-ilerleBtn.style.display="block";
+ilerle.style.display="block";
+ilerle.innerText="Devam Et";
 }
 
 }
 
-// İLERLE
-ilerleBtn.onclick = ()=>{
+// ilerle
+ilerle.onclick = ()=>{
 
 fade.style.opacity=1;
 
@@ -173,39 +169,36 @@ sahne=2;
 
 else if(sahne==2){
 video.style.display="none";
-ilerleBtn.style.display="none";
+ilerle.style.display="none";
 sifreEkrani.style.display="flex";
 }
 
 else if(sahne==3){
 video.style.display="none";
-ilerleBtn.style.display="none";
-yaziAnimasyonu();
+ilerle.style.display="none";
+yaziAnimasyon();
 }
 
 fade.style.opacity=0;
 
-},1000);
+},800);
 }
 
-// ŞİFRE
+// şifre
 function kontrol(){
 
-let t = Number(document.getElementById("tahmin").value);
+let t = Number(tahmin.value);
 
-if(!t) return;
-
-if(t>sifre) sonuc.innerText="Daha küçük";
-else if(t<sifre) sonuc.innerText="Daha büyük";
+if(t > sifre) sonuc.innerText="Daha küçük";
+else if(t < sifre) sonuc.innerText="Daha büyük";
 else{
 sonuc.innerText="Doğru!";
-devamBtn.style.display="block";
+devam.style.display="block";
+}
 }
 
-}
-
-// 3. VİDEO
-devamBtn.onclick = ()=>{
+// 3.mp4
+devam.onclick = ()=>{
 
 fade.style.opacity=1;
 
@@ -219,47 +212,46 @@ sahne=3;
 
 fade.style.opacity=0;
 
-},1000);
-
+},800);
 }
 
-// YAZI
-function yaziAnimasyonu(){
+// yazı animasyon
+function yaziAnimasyon(){
 
 yaziEkrani.style.display="block";
 yazi.innerText="";
+yaziDevam.style.display="none";
 
 let text="Yol bozuldu yolu onar...";
 let i=0;
 
-let interval=setInterval(()=>{
-
-yazi.innerText+=text[i];
+let inter=setInterval(()=>{
+yazi.innerText += text[i];
 i++;
 
 if(i>=text.length){
-clearInterval(interval);
+clearInterval(inter);
 yaziDevam.style.display="block";
 }
 
 },50);
-
 }
 
-// OYUNA GEÇ
+// oyuna geç
 yaziDevam.onclick = ()=>{
 
 yaziEkrani.style.display="none";
 oyun.style.display="grid";
 oyun.innerHTML="";
-hafizaOyunu();
+hafiza();
 
 }
 
-// HAFIZA OYUNU
-function hafizaOyunu(){
+// hafıza oyunu
+function hafiza(){
 
 let kartlar=[];
+
 for(let i=1;i<=10;i++){
 kartlar.push(i);
 kartlar.push(i);
@@ -271,30 +263,30 @@ let secilen=[];
 
 kartlar.forEach(num=>{
 
-let div=document.createElement("div");
-div.className="kart";
+let kart=document.createElement("div");
+kart.className="kart";
 
 let img=document.createElement("img");
 img.src=num+".png";
 
-div.appendChild(img);
+kart.appendChild(img);
 
-div.onclick=()=>{
+kart.onclick=()=>{
 
-if(div.classList.contains("acik")) return;
+if(kart.classList.contains("acik")) return;
 
-div.classList.add("acik");
-secilen.push(div);
+kart.classList.add("acik");
+secilen.push(kart);
 
 if(secilen.length==2){
 
-if(secilen[0].innerHTML!=secilen[1].innerHTML){
+if(secilen[0].innerHTML !== secilen[1].innerHTML){
 
 setTimeout(()=>{
 secilen[0].classList.remove("acik");
 secilen[1].classList.remove("acik");
 secilen=[];
-},700);
+},600);
 
 }else{
 secilen=[];
@@ -302,9 +294,9 @@ secilen=[];
 
 }
 
-}
+};
 
-oyun.appendChild(div);
+oyun.appendChild(kart);
 
 });
 
