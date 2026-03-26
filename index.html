@@ -2,9 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <title>Hikaye Oyunu</title>
 
 <style>
@@ -49,7 +47,6 @@ background:#cc0029;
 display:none;
 }
 
-/* KARARMA */
 #fade{
 position:fixed;
 top:0;
@@ -62,7 +59,7 @@ pointer-events:none;
 transition:opacity 1s;
 }
 
-/* ŞİFRE EKRANI */
+/* Şifre ekranı */
 #sifreEkrani{
 display:none;
 flex-direction:column;
@@ -88,6 +85,16 @@ color:#00ffcc;
 text-shadow:0 0 10px #00ffcc;
 }
 
+/* DEVAM BUTONU */
+#devam{
+display:none;
+background:#00cc66;
+}
+
+#devam:hover{
+background:#00994d;
+}
+
 </style>
 </head>
 
@@ -97,18 +104,16 @@ text-shadow:0 0 10px #00ffcc;
 
 <button id="baslat">Başlat</button>
 
-<video id="video">
-<source src="1.mp4" type="video/mp4">
-</video>
+<video id="video"></video>
 
 <button id="ilerle" onclick="ilerle()">İlerle</button>
 
-<!-- ŞİFRE OYUNU -->
 <div id="sifreEkrani">
 <h2>Şifreyi Kır 🔐</h2>
 <input type="number" id="tahmin" placeholder="3 haneli gir">
 <button onclick="kontrol()">Dene</button>
 <div id="sonuc"></div>
+<button id="devam" onclick="devamEt()">Devam Et</button>
 </div>
 
 <script>
@@ -120,10 +125,9 @@ let fade = document.getElementById("fade");
 
 let sifreEkrani = document.getElementById("sifreEkrani");
 let sonuc = document.getElementById("sonuc");
+let devamBtn = document.getElementById("devam");
 
 let sahne = 1;
-
-// random 3 haneli şifre
 let sifre = Math.floor(100 + Math.random() * 900);
 
 baslat.onclick = function(){
@@ -160,11 +164,9 @@ sahne = 2;
 }
 
 else if(sahne == 2){
-
 video.style.display="none";
 ilerleBtn.style.display="none";
 sifreEkrani.style.display="flex";
-
 }
 
 setTimeout(function(){
@@ -175,7 +177,6 @@ fade.style.opacity="0";
 
 }
 
-// ŞİFRE KONTROL
 function kontrol(){
 
 let tahmin = Number(document.getElementById("tahmin").value);
@@ -191,11 +192,31 @@ sonuc.innerText = "Daha büyük gir 🔼";
 else{
 sonuc.innerText = "Şifre Kırıldı! 🎉";
 sonuc.style.color = "#00ff00";
+devamBtn.style.display = "block";
 }
 
 }
 
-// sağ tık kapatma
+function devamEt(){
+
+fade.style.opacity = "1";
+
+setTimeout(function(){
+
+sifreEkrani.style.display="none";
+video.style.display="block";
+
+video.src="3.mp4";
+video.play();
+
+setTimeout(function(){
+fade.style.opacity="0";
+},100);
+
+},1000);
+
+}
+
 document.addEventListener("contextmenu", e => e.preventDefault());
 
 </script>
