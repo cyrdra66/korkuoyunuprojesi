@@ -95,6 +95,16 @@ background:#00cc66;
 background:#00994d;
 }
 
+/* SON DEVAM BUTONU */
+#sonDevam{
+display:none;
+background:#0099ff;
+}
+
+#sonDevam:hover{
+background:#007acc;
+}
+
 </style>
 </head>
 
@@ -107,6 +117,9 @@ background:#00994d;
 <video id="video"></video>
 
 <button id="ilerle" onclick="ilerle()">İlerle</button>
+
+<!-- SON BUTON -->
+<button id="sonDevam" onclick="siteyeGit()">Devam Et</button>
 
 <div id="sifreEkrani">
 <h2>Şifreyi Kır 🔐</h2>
@@ -126,6 +139,7 @@ let fade = document.getElementById("fade");
 let sifreEkrani = document.getElementById("sifreEkrani");
 let sonuc = document.getElementById("sonuc");
 let devamBtn = document.getElementById("devam");
+let sonDevam = document.getElementById("sonDevam");
 
 let sahne = 1;
 let sifre = Math.floor(100 + Math.random() * 900);
@@ -144,9 +158,13 @@ ilerleBtn.innerText="İlerle";
 ilerleBtn.style.display="block";
 }
 
-if(sahne == 2){
+else if(sahne == 2){
 ilerleBtn.innerText="Şifreyi Kır";
 ilerleBtn.style.display="block";
+}
+
+else if(sahne == 3){
+sonDevam.style.display = "block";
 }
 
 }
@@ -209,12 +227,18 @@ video.style.display="block";
 video.src="3.mp4";
 video.play();
 
+sahne = 3;
+
 setTimeout(function(){
 fade.style.opacity="0";
 },100);
 
 },1000);
 
+}
+
+function siteyeGit(){
+window.location.href = "https://korkuhafizaoyunu.vercel.app/";
 }
 
 document.addEventListener("contextmenu", e => e.preventDefault());
